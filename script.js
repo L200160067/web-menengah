@@ -139,11 +139,12 @@ class NoteApp extends HTMLElement {
     }
 
     connectedCallback() {
-        this.renderNotes();
+        this.renderNotes();  // Ensure this is only called once
     }
 
     renderNotes() {
         const notesList = this.shadowRoot.querySelector('#notes-list');
+        notesList.innerHTML = '';  // Clear previous notes
         notesData.forEach(note => {
             const noteItem = document.createElement('note-item');
             noteItem.noteData = note;
@@ -165,6 +166,8 @@ customElements.define('app-bar', AppBar);
 customElements.define('note-app', NoteApp);
 
 document.addEventListener('DOMContentLoaded', () => {
-    const app = document.createElement('note-app');
-    document.body.appendChild(app);
+    if (!document.querySelector('note-app')) {
+        const app = document.createElement('note-app');
+        document.body.appendChild(app);
+    }
 });

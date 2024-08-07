@@ -5,6 +5,7 @@ class NoteItem extends HTMLElement {
     }
 
     set noteData(data) {
+        const { title, body, createdAt } = data;
         this.shadowRoot.innerHTML = `
             <style>
                 div {
@@ -12,11 +13,25 @@ class NoteItem extends HTMLElement {
                     padding: 10px;
                     border-radius: 5px;
                     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                    margin-bottom: 10px;
+                }
+                h2 {
+                    margin: 0 0 10px 0;
+                }
+                p {
+                    margin: 0;
+                }
+                time {
+                    display: block;
+                    margin-top: 10px;
+                    font-size: 0.8em;
+                    color: #666;
                 }
             </style>
             <div>
-                <h2>${data.title}</h2>
-                <p>${data.body}</p>
+                <h2>${title}</h2>
+                <p>${body}</p>
+                <time>${new Date(createdAt).toLocaleString()}</time>
             </div>
         `;
     }
@@ -32,6 +47,20 @@ class NoteInput extends HTMLElement {
                     display: flex;
                     flex-direction: column;
                     gap: 10px;
+                    margin-bottom: 20px;
+                }
+                input, textarea {
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                }
+                button {
+                    padding: 10px;
+                    border: none;
+                    border-radius: 5px;
+                    background-color: #6200ea;
+                    color: #fff;
+                    cursor: pointer;
                 }
             </style>
             <form id="note-form">
@@ -50,8 +79,9 @@ class NoteInput extends HTMLElement {
         event.preventDefault();
         const title = this.shadowRoot.querySelector('#title').value;
         const body = this.shadowRoot.querySelector('#body').value;
+        const createdAt = new Date().toISOString();
+        const newNote = { title, body, createdAt, archived: false };
 
-        const newNote = { title, body };
         document.querySelector('note-app').addNoteToList(newNote);
 
         this.shadowRoot.querySelector('#note-form').reset();
@@ -88,6 +118,9 @@ class NoteApp extends HTMLElement {
             <style>
                 :host {
                     display: block;
+                    padding: 20px;
+                    max-width: 800px;
+                    margin: 0 auto;
                 }
                 #notes-list {
                     display: grid;

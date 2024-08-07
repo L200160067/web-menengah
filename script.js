@@ -95,12 +95,13 @@ class AppBar extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <style>
                 div {
-                    width: 100%;
+                    width: 770px;
                     background-color: #6200ea;
                     color: #fff;
                     padding: 15px;
                     text-align: center;
                     font-size: 1.5em;
+                    margin-bottom: 20px;
                 }
             </style>
             <div>
